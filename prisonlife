@@ -1,0 +1,331 @@
+--Made by FroggyDev
+--DM froggy_dev on discord if anything is broken
+
+--I WILL ADD UPDATES IN THE FUTURE!
+
+
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Window = Rayfield:CreateWindow({
+    Name = "HydroSploit | PrisonLife",
+    LoadingTitle = "HydroSploit",
+    LoadingSubtitle = "by FroggyDev",
+    Theme = "DarkBlue",
+    DisableRayfieldPrompts = false,
+    ConfigurationSaving = {
+       Enabled = true,
+       FolderName = nil,
+       FileName = "HydroSploit"
+    },
+    Discord = {
+       Enabled = false,
+       Invite = "noinvitelink",
+       RememberJoins = true
+    },
+    KeySystem = false,
+    KeySettings = {
+       Title = "HydroSploit",
+       Subtitle = "Key System",
+       Note = "Key thingie soon",
+       FileName = "Key",
+       SaveKey = true,
+       GrabKeyFromSite = false,
+       Key = {"key"}
+    }
+})
+
+local Tab = Window:CreateTab("Player", 4483362458)
+local Button = Tab:CreateButton({
+    Name = "Walkspeed (Hit shift to disable)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid.WalkSpeed = 150
+        else
+            warn("Character or Humanoid not found.")
+        end
+    end,
+}) 
+local Button = Tab:CreateButton({
+    Name = "JumpPower",
+    Callback = function()
+        game.Players.LocalPlayer.Character:WaitForChild("Humanoid").JumpPower = 100
+    end,
+ })
+ local Button = Tab:CreateButton({
+    Name = "Fly (e to disable)",
+    Callback = function()
+        --Waits until the player is in game
+repeat wait()
+until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:findFirstChild("Torso") and game.Players.LocalPlayer.Character:findFirstChild("Humanoid")
+local mouse = game.Players.LocalPlayer:GetMouse()
+
+--Waits until the player's mouse is found
+repeat wait() until mouse
+
+--Variables
+local plr = game.Players.LocalPlayer
+local torso = plr.Character.Torso
+local flying = true
+local deb = true
+local ctrl = {f = 0, b = 0, l = 0, r = 0}
+local lastctrl = {f = 0, b = 0, l = 0, r = 0}
+local maxspeed = 50
+local speed = 0
+local bg = nil
+local bv = nil
+
+--Actual flying
+function Fly()
+    game.StarterGui:SetCore("SendNotification", {Title="Fly Activated"; Text="HydroSploit"; Duration=1;})
+    bg = Instance.new("BodyGyro", torso)
+    bg.P = 9e4
+    bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+    bg.cframe = torso.CFrame
+    bv = Instance.new("BodyVelocity", torso)
+    bv.velocity = Vector3.new(0,0.1,0)
+    bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+    repeat wait()
+      plr.Character.Humanoid.PlatformStand = true
+      if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
+        speed = speed+.5+(speed/maxspeed)
+        if speed > maxspeed then
+          speed = maxspeed
+        end
+      elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then
+        speed = speed-1
+        if speed < 0 then
+          speed = 0
+        end
+      end
+      if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then
+        bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+        lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r}
+      elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then
+        bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed
+      else
+        bv.velocity = Vector3.new(0,0.1,0)
+      end
+      bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0)
+    until not flying
+    ctrl = {f = 0, b = 0, l = 0, r = 0}
+    lastctrl = {f = 0, b = 0, l = 0, r = 0}
+    speed = 0
+    bg:Destroy()
+    bg = nil
+    bv:Destroy()
+    bv = nil
+    plr.Character.Humanoid.PlatformStand = false
+    game.StarterGui:SetCore("SendNotification", {Title="Fly Deactivated"; Text="HydroSploit"; Duration=1;})
+end
+
+--Controls
+mouse.KeyDown:connect(function(key)
+    if key:lower() == "e" then
+        if flying then 
+            flying = false
+        else
+            flying = true
+            Fly()
+        end
+    elseif key:lower() == "w" then
+        ctrl.f = 1
+    elseif key:lower() == "s" then
+        ctrl.b = -1
+    elseif key:lower() == "a" then
+        ctrl.l = -1
+    elseif key:lower() == "d" then
+        ctrl.r = 1
+    end
+end)
+
+mouse.KeyUp:connect(function(key)
+    if key:lower() == "w" then
+        ctrl.f = 0
+    elseif key:lower() == "s" then
+        ctrl.b = 0
+    elseif key:lower() == "a" then
+        ctrl.l = 0
+    elseif key:lower() == "d" then
+        ctrl.r = 0
+    end
+end)
+
+Fly()
+    end,
+ })
+ local Tab = Window:CreateTab("Teleports", 4483362458) -- Title, Image
+ local Button = Tab:CreateButton({
+    Name = "Guard Room",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(857,98,2322)
+    end,
+ })
+ local Button = Tab:CreateButton({
+    Name = "Inside Prison",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(951,101,2286)
+    end,
+ })
+ local Button = Tab:CreateButton({
+    Name = "Criminal Base",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-920,93,2138)
+    end,
+ })
+ 
+ local Tab = Window:CreateTab("Combat", 4483362458) -- Title, Image
+ local Button = Tab:CreateButton({
+    Name = "Kill Aura",
+    Callback = function()
+        while wait () do
+            for i, e in pairs(game.Players:GetChildren()) do
+                                  if e ~= game.Players.LocalPlayer then
+                                      local meleeEvent = game:GetService("ReplicatedStorage").meleeEvent
+                                      meleeEvent:FireServer(e)
+                                      
+                                  end end end 
+    end,
+ })
+ local Button = Tab:CreateButton({
+    Name = "Super Punch",
+    Callback = function()
+        mainRemotes = game.ReplicatedStorage
+meleeRemote = mainRemotes['meleeEvent']
+mouse = game.Players.LocalPlayer:GetMouse()
+punching = false
+cooldown = false
+
+function punch()
+cooldown = true
+local part = Instance.new("Part", game.Players.LocalPlayer.Character)
+part.Transparency = 1
+part.Size = Vector3.new(5, 2, 3)
+part.CanCollide = false
+local w1 = Instance.new("Weld", part)
+w1.Part0 = game.Players.LocalPlayer.Character.Torso
+w1.Part1 = part
+w1.C1 = CFrame.new(0,0,2)
+part.Touched:connect(function(hit)
+if game.Players:FindFirstChild(hit.Parent.Name) then
+local plr = game.Players:FindFirstChild(hit.Parent.Name) 
+if plr.Name ~= game.Players.LocalPlayer.Name then
+part:Destroy()
+
+for i = 1,100 do
+meleeRemote:FireServer(plr)
+end
+end
+end
+end)
+
+wait(1)
+cooldown = false
+part:Destroy()
+end
+
+
+mouse.KeyDown:connect(function(key)
+if cooldown == false then
+if key:lower() == "f" then
+
+punch()
+
+end
+end
+end)
+    end,
+ })
+ local Button = Tab:CreateButton({
+    Name = "Killall",
+    Callback = function()
+        spawn(function()
+            while wait(0.1) do
+            for i, v in next, game:GetService("Players"):GetChildren() do
+            pcall(function()
+            if v~= game:GetService("Players").LocalPlayer and not v.Character:FindFirstChildOfClass("ForceField") and v.Character.Humanoid.Health > 0 then
+            while v.Character:WaitForChild("Humanoid").Health > 0 do
+            wait();
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame;
+            for x, c in next, game:GetService("Players"):GetChildren() do
+            if c ~= game:GetService("Players").LocalPlayer then game.ReplicatedStorage.meleeEvent:FireServer(c) end
+            end
+            end
+            end
+            end)
+            wait()
+            end
+            end
+            end)
+    end,
+ })
+ local Tab = Window:CreateTab("Other", 4483362458) -- Title, Image
+ local Button = Tab:CreateButton({
+    Name = "B-Tools",
+    Callback = function()
+        backpack = game:GetService("Players").LocalPlayer.Backpack
+
+hammer = Instance.new("HopperBin")
+hammer.Name = "Hammer"
+hammer.BinType = 4
+hammer.Parent = backpack
+
+cloneTool = Instance.new("HopperBin")
+cloneTool.Name = "Clone"
+cloneTool.BinType = 3
+cloneTool.Parent = backpack
+
+grabTool = Instance.new("HopperBin")
+grabTool.Name = "Grab"
+grabTool.BinType = 2
+grabTool.Parent = backpack
+    end,
+ })
+ local Button = Tab:CreateButton({
+    Name = "Arrest All",
+    Callback = function()
+        local Player = game.Players.LocalPlayer
+local cpos = Player.Character.HumanoidRootPart.CFrame
+for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+if v.Name ~= Player.Name then
+local i = 10
+ repeat
+ wait()
+ i = i-1
+ game.Workspace.Remote.arrest:InvokeServer(v.Character.HumanoidRootPart)
+ Player.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+ until i == 0
+end
+end
+game:GetService("StarterGui"):SetCore("SendNotification", {
+ Title = "Finished!";
+ Text = "HydroSploit"
+})
+    end,
+ })
+
+
+
+
+
+
+
+
+
+
+
+
+--credits
+ local Tab = Window:CreateTab("Credits", 4483362458) -- Title, Image
+ local Button = Tab:CreateButton({
+    Name = "Created by FroggyDev.",
+    Callback = function()
+    -- The function that takes place when the button is pressed
+    end,
+ })
+ local Button = Tab:CreateButton({
+    Name = "DM froggy_dev on discord if any issues.",
+    Callback = function()
+    -- The function that takes place when the button is pressed
+    end,
+ })
